@@ -148,10 +148,23 @@
         const vpH = viewport.clientHeight;
 
         minScale = Math.min(vpW / imgW, vpH / imgH) * 0.9;
-        scale = minScale;
 
-        panX = (vpW - imgW * scale) / 2;
-        panY = (vpH - imgH * scale) / 2;
+        if (vpW <= 768) {
+            // Fit the central Koltsevaya Ring Line (circle) to the mobile screen
+            const ringWidth = imgW * 0.32;
+            const ringHeight = imgH * 0.34;
+            const ringCenterX = imgW * 0.503;
+            const ringCenterY = imgH * 0.396;
+            const fitRingScale = Math.min(vpW / ringWidth, vpH / ringHeight);
+
+            scale = Math.min(Math.max(fitRingScale, minScale), maxScale);
+            panX = vpW / 2 - ringCenterX * scale;
+            panY = vpH / 2 - ringCenterY * scale;
+        } else {
+            scale = minScale;
+            panX = (vpW - imgW * scale) / 2;
+            panY = (vpH - imgH * scale) / 2;
+        }
 
         updateTransform();
         createStationMarkers();
