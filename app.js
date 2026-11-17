@@ -770,7 +770,9 @@
         openStationModal(station);
 
         focusStationInView(station, () => {
-            highlightStation(station);
+            if (!stationModal.classList.contains('hidden')) {
+                highlightStation(station);
+            }
         });
     }
 
@@ -849,6 +851,7 @@
         stationModal.classList.remove('expanded');
         stationModal.setAttribute('aria-hidden', 'true');
         document.body.classList.remove('modal-open');
+        clearHighlight();
     }
 
     async function openStationModal(station) {
